@@ -1,0 +1,35 @@
+#for mysql stotage
+#database host:root   passowrd:rootpass 
+#database user:<your chooice>
+#instead of loaclhost replace with "dbos"
+
+version: '3'
+services:
+  dbos:
+    image: mysql:5.7
+    volumes:
+      - sql:/var/lib/mysql
+    restart : always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+
+  mycloud:
+    image: owncloud:latest
+    restart: always
+    ports:
+      - 6969:80
+    volumes:
+      - cloud:/var/www/html
+      - data:/var/www/html/data
+      - config:/var/www/html/config
+      - apps:/var/www/html/apps
+    depends_on:
+      - dbos
+
+volumes:
+  sql:
+  cloud:
+  data:
+  apps:
+  config:
+
